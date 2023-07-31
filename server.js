@@ -1,6 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const Product = require('./models/productModels')
 const app =express()
+
+app.use(express.json())
 
 //routes
 
@@ -12,7 +15,16 @@ app.get("/blog",(req,res)=>{
     res.send("Hello blog my name is dev")
 })
 
+app.post('/product',async(req,res)=>{
+    try{
+        const product = await Product.create(req.body)
+        res.status(200).json(product);
 
+    }catch(error){
+        console.log(error.message);
+        res.status(500).json({message:error.message})
+    }
+})
 mongoose.
 connect('mongodb+srv://2019riyashukla:123456789RIYA@devapi.7ouxclk.mongodb.net/Node-API?retryWrites=true&w=majority')
 .then(()=>{
