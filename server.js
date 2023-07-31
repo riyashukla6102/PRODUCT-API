@@ -61,7 +61,21 @@ app.put('/products/:id',async(req,res)=>{
     }
 })
 
+//delete a product
 
+app.delete('/products/:id' , async(req,res) =>{
+    try{
+        const {id} =req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if(!product){
+            return res.status(404).json({message: `cannot find any product with IS ${id}`})
+        }
+        res.status(200).json(product);
+
+    }catch(error){
+        res.status(500).json({message:error.message})
+    }
+})
 mongoose.
 connect('mongodb+srv://2019riyashukla:123456789RIYA@devapi.7ouxclk.mongodb.net/Node-API?retryWrites=true&w=majority')
 .then(()=>{
