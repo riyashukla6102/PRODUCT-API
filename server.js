@@ -4,6 +4,7 @@ const Product = require('./models/productModels')
 const app =express()
 
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 //routes
 
@@ -44,6 +45,23 @@ app.get('/products/:id',async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 })
+ //Update the product
+app.put('/products/:id',async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+        if(!product){
+            return res.status(404).json({message:`Cannot find any product with ID ${id}`})
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+    }catch(error){
+        res.status(500).json({message:error.message})
+
+    }
+})
+
+
 mongoose.
 connect('mongodb+srv://2019riyashukla:123456789RIYA@devapi.7ouxclk.mongodb.net/Node-API?retryWrites=true&w=majority')
 .then(()=>{
